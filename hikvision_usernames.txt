@@ -1,0 +1,7 @@
+admin
+root
+user
+operator
+guest
+supervisor
+hikvision

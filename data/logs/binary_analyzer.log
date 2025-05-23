@@ -1,0 +1,36 @@
+2025-05-22 16:05:12,595 - binary_analyzer - INFO - Binary Analyzer initialized
+2025-05-22 16:05:12,597 - binary_analyzer - INFO - Tool found: objdump
+2025-05-22 16:05:12,599 - binary_analyzer - INFO - Tool found: readelf
+2025-05-22 16:05:12,600 - binary_analyzer - INFO - Tool found: strings
+2025-05-22 16:05:12,602 - binary_analyzer - WARNING - Tool not found: ghidra_server
+2025-05-22 16:05:12,604 - binary_analyzer - WARNING - Tool not found: radare2
+2025-05-22 16:12:49,637 - binary_analyzer - INFO - Binary Analyzer initialized
+2025-05-22 16:12:49,640 - binary_analyzer - INFO - Tool found: objdump
+2025-05-22 16:12:49,642 - binary_analyzer - INFO - Tool found: readelf
+2025-05-22 16:12:49,644 - binary_analyzer - INFO - Tool found: strings
+2025-05-22 16:12:49,646 - binary_analyzer - WARNING - Tool not found: ghidra_server
+2025-05-22 16:12:49,650 - binary_analyzer - WARNING - Tool not found: radare2
+2025-05-22 16:20:38,066 - binary_analyzer - INFO - Binary Analyzer initialized
+2025-05-22 16:20:38,068 - binary_analyzer - INFO - Tool found: objdump
+2025-05-22 16:20:38,069 - binary_analyzer - INFO - Tool found: readelf
+2025-05-22 16:20:38,071 - binary_analyzer - INFO - Tool found: strings
+2025-05-22 16:20:38,073 - binary_analyzer - WARNING - Tool not found: ghidra_server
+2025-05-22 16:20:38,074 - binary_analyzer - WARNING - Tool not found: radare2
+2025-05-22 16:58:08,754 - binary_analyzer - INFO - Binary Analyzer initialized
+2025-05-22 16:58:08,756 - binary_analyzer - INFO - Tool found: objdump
+2025-05-22 16:58:08,759 - binary_analyzer - INFO - Tool found: readelf
+2025-05-22 16:58:08,761 - binary_analyzer - INFO - Tool found: strings
+2025-05-22 16:58:08,763 - binary_analyzer - WARNING - Tool not found: ghidra_server
+2025-05-22 16:58:08,764 - binary_analyzer - WARNING - Tool not found: radare2
+2025-05-22 17:03:59,502 - binary_analyzer - INFO - Binary Analyzer initialized
+2025-05-22 17:03:59,503 - binary_analyzer - INFO - Tool found: objdump
+2025-05-22 17:03:59,505 - binary_analyzer - INFO - Tool found: readelf
+2025-05-22 17:03:59,506 - binary_analyzer - INFO - Tool found: strings
+2025-05-22 17:03:59,507 - binary_analyzer - WARNING - Tool not found: ghidra_server
+2025-05-22 17:03:59,508 - binary_analyzer - WARNING - Tool not found: radare2
+2025-05-22 17:11:16,241 - binary_analyzer - INFO - Binary Analyzer initialized
+2025-05-22 17:11:16,243 - binary_analyzer - INFO - Tool found: objdump
+2025-05-22 17:11:16,245 - binary_analyzer - INFO - Tool found: readelf
+2025-05-22 17:11:16,246 - binary_analyzer - INFO - Tool found: strings
+2025-05-22 17:11:16,248 - binary_analyzer - WARNING - Tool not found: ghidra_server
+2025-05-22 17:11:16,249 - binary_analyzer - WARNING - Tool not found: radare2

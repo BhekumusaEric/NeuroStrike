@@ -1,0 +1,5 @@
+2025-05-22 14:59:15,492 - huggingface_client - INFO - HuggingFace client initialized
+2025-05-22 14:59:23,450 - huggingface_client - ERROR - HuggingFace API error: 401 - {"error":"Invalid credentials in Authorization header"}
+2025-05-22 15:05:12,470 - huggingface_client - INFO - HuggingFace client initialized
+2025-05-22 15:05:12,470 - huggingface_client - INFO - Assuming HuggingFace API is accessible (skipping verification)
+2025-05-22 15:05:19,180 - huggingface_client - ERROR - HuggingFace API error: 404 - Not Found

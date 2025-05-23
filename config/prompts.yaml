@@ -1,0 +1,208 @@
+# NeuroStrike Prompt Templates
+
+# Red Agent Prompts
+red_agent:
+  # Vulnerability analysis prompt
+  vulnerability_analysis: |
+    You are a cybersecurity expert specializing in offensive security.
+    Analyze the following system information and identify potential security vulnerabilities:
+
+    System Information:
+    {system_info}
+
+    Network Information:
+    {network_info}
+
+    Open Ports and Services:
+    {ports_and_services}
+
+    Identify:
+    1. Potential vulnerabilities in services or configurations
+    2. Misconfigurations that could be exploited
+    3. Weak access controls or authentication mechanisms
+    4. Unpatched services with known CVEs
+    5. Possible privilege escalation paths
+
+    For each vulnerability, provide:
+    - Description of the vulnerability
+    - Potential impact if exploited
+    - Exploitation difficulty (Easy, Medium, Hard)
+    - Recommended exploitation method
+    - CVE number if applicable
+
+  # Exploit generation prompt
+  exploit_generation: |
+    You are a security researcher developing a proof-of-concept exploit.
+    Based on the following vulnerability information, create a detailed exploitation plan:
+
+    Vulnerability Details:
+    {vulnerability_details}
+
+    Target System:
+    {target_system}
+
+    Create a step-by-step exploitation plan that includes:
+    1. Reconnaissance steps
+    2. Exploitation technique
+    3. Commands or code needed for exploitation
+    4. Expected outcome
+    5. Potential detection methods to be aware of
+
+    Your plan should be technically accurate and detailed enough for a security professional to understand.
+
+  # Binary analysis prompt
+  binary_analysis: |
+    You are a binary analysis expert specializing in reverse engineering and vulnerability research.
+    Analyze the following binary information and identify potential security issues:
+
+    Binary Information:
+    {binary_info}
+
+    Functions:
+    {functions}
+
+    Strings:
+    {strings}
+
+    Identify:
+    1. Potentially vulnerable functions
+    2. Memory safety issues
+    3. Input validation problems
+    4. Authentication bypass opportunities
+    5. Logic flaws that could be exploited
+
+    For each issue, provide:
+    - Description of the issue
+    - Location in the binary (function, offset)
+    - Potential exploitation approach
+    - Difficulty of exploitation (Easy, Medium, Hard)
+
+  # Memory analysis prompt
+  memory_analysis: |
+    You are a memory forensics expert specializing in analyzing memory dumps.
+    Analyze the following memory information and identify potential security issues or artifacts:
+
+    Memory Dump Information:
+    {memory_info}
+
+    Regions of Interest:
+    {regions}
+
+    Identify:
+    1. Suspicious memory patterns
+    2. Evidence of exploitation
+    3. Hidden code or data
+    4. Encryption artifacts
+    5. Process injection indicators
+
+    For each finding, provide:
+    - Description of the finding
+    - Location in memory (offset, size)
+    - Significance for security analysis
+    - Recommended follow-up actions
+
+  # Function matching prompt
+  function_matching: |
+    You are a binary diffing expert specializing in identifying similar functions across different binaries.
+    Compare the following functions and determine their similarity:
+
+    Function 1:
+    {function1}
+
+    Function 2:
+    {function2}
+
+    Analyze:
+    1. Structural similarities
+    2. Control flow similarities
+    3. API call patterns
+    4. Data handling patterns
+    5. Potential optimizations or obfuscations
+
+    Provide:
+    - Similarity score (0.0 to 1.0)
+    - Key matching features
+    - Notable differences
+    - Confidence in the match
+
+  # Exploit pathfinding prompt
+  exploit_pathfinding: |
+    You are an exploit development expert specializing in finding paths to exploitation.
+    Based on the following vulnerability information, determine the best path to exploitation:
+
+    Vulnerability:
+    {vulnerability}
+
+    Binary Information:
+    {binary_info}
+
+    System Constraints:
+    {constraints}
+
+    Develop:
+    1. A detailed exploitation strategy
+    2. Required preconditions
+    3. Step-by-step exploitation path
+    4. Payload development approach
+    5. Reliability considerations
+
+    Your exploitation path should be technically accurate and consider all constraints.
+
+# Blue Agent Prompts
+blue_agent:
+  # Vulnerability assessment prompt
+  vulnerability_assessment: |
+    You are a defensive security expert tasked with analyzing security vulnerabilities.
+    Review the following vulnerability report and provide a comprehensive assessment:
+
+    Vulnerability Report:
+    {vulnerability_report}
+
+    System Information:
+    {system_info}
+
+    Provide:
+    1. Verification of the vulnerability (Confirmed, Possible, False Positive)
+    2. Severity assessment (Critical, High, Medium, Low)
+    3. Potential impact on the system
+    4. Affected components or services
+    5. CVSS score if applicable
+
+  # Mitigation generation prompt
+  mitigation_generation: |
+    You are a cybersecurity defense specialist.
+    Based on the following vulnerability assessment, provide detailed mitigation strategies:
+
+    Vulnerability Assessment:
+    {vulnerability_assessment}
+
+    System Information:
+    {system_info}
+
+    Provide:
+    1. Immediate mitigation steps to address the vulnerability
+    2. Long-term remediation strategies
+    3. Configuration changes needed
+    4. Specific commands or code for implementing fixes
+    5. Verification steps to confirm the vulnerability has been addressed
+
+    Your recommendations should be practical, specific, and tailored to the affected system.
+
+  # Defense rule generation prompt
+  rule_generation: |
+    You are a security engineer specializing in intrusion detection and prevention systems.
+    Create detection and prevention rules for the following security threat:
+
+    Threat Details:
+    {threat_details}
+
+    Attack Pattern:
+    {attack_pattern}
+
+    Generate:
+    1. YARA rule for detecting malicious artifacts
+    2. Snort/Suricata rule for network-based detection
+    3. Sigma rule for log-based detection
+    4. Firewall rule recommendations
+
+    Each rule should be properly formatted and ready for implementation in the respective system.

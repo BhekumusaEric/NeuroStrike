@@ -1,0 +1,31 @@
+# Hikvision Camera RTSP URLs
+
+Use these URLs with VLC or another media player to access the camera streams.
+You will need to enter the credentials when prompted.
+
+## Credentials
+Username: admin
+Password: 12345
+
+## Main Stream URLs
+rtsp://admin:12345@192.168.89.2:554/Streaming/Channels/101
+rtsp://admin:12345@192.168.89.2:554/Streaming/Channels/201
+rtsp://admin:12345@192.168.89.2:554/Streaming/Channels/301
+rtsp://admin:12345@192.168.89.2:554/Streaming/Channels/401
+
+## Sub Stream URLs (lower quality)
+rtsp://admin:12345@192.168.89.2:554/Streaming/Channels/102
+rtsp://admin:12345@192.168.89.2:554/Streaming/Channels/202
+rtsp://admin:12345@192.168.89.2:554/Streaming/Channels/302
+rtsp://admin:12345@192.168.89.2:554/Streaming/Channels/402
+
+## Instructions for VLC:
+1. Open VLC Media Player
+2. Click on "Media" > "Open Network Stream"
+3. Paste one of the RTSP URLs above
+4. Click "Play"
+5. Enter the credentials if prompted
+
+## Note:
+If the camera has multiple channels, try different channel numbers (101, 201, etc.)
+The first digit represents the camera number, and the last digit represents the stream type (1 for main stream, 2 for sub stream).

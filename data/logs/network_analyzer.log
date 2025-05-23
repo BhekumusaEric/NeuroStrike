@@ -1,0 +1,54 @@
+2025-05-22 11:00:05,480 - network_analyzer - INFO - Scanning target: 127.0.0.1
+2025-05-22 11:00:05,480 - network_analyzer - INFO - Performing host discovery on 127.0.0.1
+2025-05-22 11:00:05,498 - network_analyzer - INFO - Performing port scan on 127.0.0.1
+2025-05-22 11:00:22,356 - network_analyzer - INFO - Gathering system information for 127.0.0.1
+2025-05-22 11:00:22,622 - network_analyzer - ERROR - Error gathering system information: 'TCP/IP fingerprinting (for OS scan) requires root privileges.\nQUITTING!\n'
+2025-05-22 11:02:03,919 - network_analyzer - INFO - Parsing vulnerabilities from LLM response
+2025-05-22 14:23:42,347 - network_analyzer - INFO - Scanning target: 127.0.0.1
+2025-05-22 14:23:42,354 - network_analyzer - INFO - Performing host discovery on 127.0.0.1
+2025-05-22 14:23:42,365 - network_analyzer - INFO - Performing port scan on 127.0.0.1
+2025-05-22 14:23:48,864 - network_analyzer - INFO - Gathering system information for 127.0.0.1
+2025-05-22 14:23:49,031 - network_analyzer - ERROR - Error gathering system information with nmap: 'TCP/IP fingerprinting (for OS scan) requires root privileges.\nQUITTING!\n'
+2025-05-22 14:25:17,340 - network_analyzer - INFO - Parsing vulnerabilities from LLM response
+2025-05-22 14:26:20,453 - network_analyzer - INFO - Parsing vulnerabilities from LLM response
+2025-05-22 14:26:23,614 - network_analyzer - INFO - Scanning target: 127.0.0.1
+2025-05-22 14:26:23,614 - network_analyzer - INFO - Performing host discovery on 127.0.0.1
+2025-05-22 14:26:23,624 - network_analyzer - INFO - Performing port scan on 127.0.0.1
+2025-05-22 14:26:29,942 - network_analyzer - INFO - Gathering system information for 127.0.0.1
+2025-05-22 14:26:30,187 - network_analyzer - ERROR - Error gathering system information with nmap: 'TCP/IP fingerprinting (for OS scan) requires root privileges.\nQUITTING!\n'
+2025-05-22 14:26:34,288 - network_analyzer - INFO - Parsing vulnerabilities from LLM response
+2025-05-22 14:29:33,641 - network_analyzer - INFO - Scanning target: 1.1.1.1
+2025-05-22 14:29:33,641 - network_analyzer - INFO - Performing host discovery on 1.1.1.1
+2025-05-22 14:29:33,798 - network_analyzer - INFO - Performing port scan on 1.1.1.1
+2025-05-22 14:30:21,067 - network_analyzer - INFO - Gathering system information for 1.1.1.1
+2025-05-22 14:30:21,240 - network_analyzer - ERROR - Error gathering system information with nmap: 'TCP/IP fingerprinting (for OS scan) requires root privileges.\nQUITTING!\n'
+2025-05-22 14:32:14,547 - network_analyzer - INFO - Parsing vulnerabilities from LLM response
+2025-05-22 16:05:25,258 - network_analyzer - INFO - Scanning target: 192.168.89.2
+2025-05-22 16:05:25,259 - network_analyzer - INFO - Performing host discovery on 192.168.89.2
+2025-05-22 16:05:25,347 - network_analyzer - INFO - Performing port scan on 192.168.89.2
+2025-05-22 16:07:59,181 - network_analyzer - INFO - Gathering system information for 192.168.89.2
+2025-05-22 16:07:59,316 - network_analyzer - ERROR - Error gathering system information with nmap: 'TCP/IP fingerprinting (for OS scan) requires root privileges.\nQUITTING!\n'
+2025-05-22 16:13:10,364 - network_analyzer - INFO - Scanning target: 192.168.89.2
+2025-05-22 16:13:10,371 - network_analyzer - INFO - Performing host discovery on 192.168.89.2
+2025-05-22 16:13:10,464 - network_analyzer - INFO - Performing port scan on 192.168.89.2
+2025-05-22 16:15:54,307 - network_analyzer - INFO - Gathering system information for 192.168.89.2
+2025-05-22 16:15:54,439 - network_analyzer - ERROR - Error gathering system information with nmap: 'TCP/IP fingerprinting (for OS scan) requires root privileges.\nQUITTING!\n'
+2025-05-22 16:18:38,097 - network_analyzer - INFO - Parsing vulnerabilities from LLM response
+2025-05-22 16:20:50,387 - network_analyzer - INFO - Scanning target: 192.168.89.2
+2025-05-22 16:20:50,387 - network_analyzer - INFO - Performing host discovery on 192.168.89.2
+2025-05-22 16:20:50,416 - network_analyzer - INFO - Performing port scan on 192.168.89.2
+2025-05-22 16:23:26,328 - network_analyzer - INFO - Gathering system information for 192.168.89.2
+2025-05-22 16:23:26,515 - network_analyzer - ERROR - Error gathering system information with nmap: 'TCP/IP fingerprinting (for OS scan) requires root privileges.\nQUITTING!\n'
+2025-05-22 16:58:20,292 - network_analyzer - INFO - Scanning target: 192.168.89.2
+2025-05-22 16:58:20,299 - network_analyzer - INFO - Performing host discovery on 192.168.89.2
+2025-05-22 16:58:20,392 - network_analyzer - INFO - Performing port scan on 192.168.89.2
+2025-05-22 17:00:56,931 - network_analyzer - INFO - Gathering system information for 192.168.89.2
+2025-05-22 17:00:57,091 - network_analyzer - ERROR - Error gathering system information with nmap: 'TCP/IP fingerprinting (for OS scan) requires root privileges.\nQUITTING!\n'
+2025-05-22 17:05:01,781 - network_analyzer - INFO - Scanning target: 192.168.89.2
+2025-05-22 17:05:01,782 - network_analyzer - INFO - Performing host discovery on 192.168.89.2
+2025-05-22 17:05:01,848 - network_analyzer - INFO - Performing port scan on 192.168.89.2
+2025-05-22 17:07:40,745 - network_analyzer - INFO - Gathering system information for 192.168.89.2
+2025-05-22 17:07:40,869 - network_analyzer - ERROR - Error gathering system information with nmap: 'TCP/IP fingerprinting (for OS scan) requires root privileges.\nQUITTING!\n'
+2025-05-22 17:11:32,060 - network_analyzer - INFO - Scanning target: 192.168.89.0/24
+2025-05-22 17:11:32,060 - network_analyzer - INFO - Performing host discovery on 192.168.89.0/24
+2025-05-22 17:11:43,110 - network_analyzer - INFO - Performing port scan on 192.168.89.0/24

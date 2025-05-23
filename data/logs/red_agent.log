@@ -1,0 +1,42 @@
+2025-05-22 10:59:31,608 - red_agent - INFO - Red Agent initialized
+2025-05-22 11:00:05,480 - red_agent - INFO - Scanning target: 127.0.0.1
+2025-05-22 11:02:03,918 - red_agent - INFO - Analyzing vulnerabilities
+2025-05-22 11:03:17,147 - red_agent - INFO - Generating exploit plan for: 1. SSH Service Misconfiguration
+       Severity: Medium
+       CVE: N/A
+       Exploitation Difficulty: Easy
+
+       The SSH service on port 22 is configured to allow password authentication, which makes it vulnerable to brute force attacks.
+2025-05-22 11:05:48,000 - red_agent - INFO - Safe mode enabled. Simulating exploitation only.
+2025-05-22 11:05:48,001 - red_agent - INFO - Executing exploit plan: Unknown Exploit
+2025-05-22 14:20:51,882 - red_agent - INFO - Red Agent initialized
+2025-05-22 14:23:13,894 - red_agent - INFO - Red Agent initialized
+2025-05-22 14:23:42,347 - red_agent - INFO - Scanning target: 127.0.0.1
+2025-05-22 14:25:16,729 - red_agent - INFO - Analyzing vulnerabilities
+2025-05-22 14:26:19,708 - red_agent - INFO - Analyzing vulnerabilities
+2025-05-22 14:26:23,614 - red_agent - INFO - Scanning target: 127.0.0.1
+2025-05-22 14:26:33,535 - red_agent - INFO - Analyzing vulnerabilities
+2025-05-22 14:29:01,308 - red_agent - INFO - Red Agent initialized
+2025-05-22 14:29:33,640 - red_agent - INFO - Scanning target: 1.1.1.1
+2025-05-22 14:32:13,155 - red_agent - INFO - Analyzing vulnerabilities
+2025-05-22 14:59:44,915 - red_agent - INFO - Red Agent initialized
+2025-05-22 15:05:50,888 - red_agent - INFO - Red Agent initialized
+2025-05-22 16:05:12,659 - red_agent - INFO - Binary analysis components initialized
+2025-05-22 16:05:12,659 - red_agent - INFO - Red Agent initialized
+2025-05-22 16:05:25,258 - red_agent - INFO - Scanning target: 192.168.89.2
+2025-05-22 16:12:49,736 - red_agent - INFO - Binary analysis components initialized
+2025-05-22 16:12:49,736 - red_agent - INFO - Red Agent initialized
+2025-05-22 16:13:10,360 - red_agent - INFO - Scanning target: 192.168.89.2
+2025-05-22 16:18:30,792 - red_agent - INFO - Analyzing vulnerabilities
+2025-05-22 16:20:38,120 - red_agent - INFO - Binary analysis components initialized
+2025-05-22 16:20:38,120 - red_agent - INFO - Red Agent initialized
+2025-05-22 16:20:50,387 - red_agent - INFO - Scanning target: 192.168.89.2
+2025-05-22 16:58:08,824 - red_agent - INFO - Binary analysis components initialized
+2025-05-22 16:58:08,825 - red_agent - INFO - Red Agent initialized
+2025-05-22 16:58:20,291 - red_agent - INFO - Scanning target: 192.168.89.2
+2025-05-22 17:03:59,553 - red_agent - INFO - Binary analysis components initialized
+2025-05-22 17:03:59,553 - red_agent - INFO - Red Agent initialized
+2025-05-22 17:05:01,781 - red_agent - INFO - Scanning target: 192.168.89.2
+2025-05-22 17:11:16,303 - red_agent - INFO - Binary analysis components initialized
+2025-05-22 17:11:16,304 - red_agent - INFO - Red Agent initialized
+2025-05-22 17:11:32,059 - red_agent - INFO - Scanning target: 192.168.89.0/24

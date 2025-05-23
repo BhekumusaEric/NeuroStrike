@@ -1,0 +1,55 @@
+# NeuroStrike Global Configuration
+
+# LLM Configuration
+llm:
+  provider: "openai"  # Options: openai, local, huggingface
+  model: "gpt-4"      # Model name
+  temperature: 0.7
+  max_tokens: 2000
+  api_key_env: "OPENAI_API_KEY"  # Name of environment variable for API key
+
+# Network Configuration
+network:
+  scan_timeout: 300  # Timeout for network scans in seconds
+  max_hosts: 100     # Maximum number of hosts to scan
+  default_ports: "22,80,443,3389,8080,8443"  # Default ports to scan
+  excluded_ips: []   # IPs to exclude from scanning
+
+# API Integrations
+api:
+  shodan:
+    enabled: true    # Whether to use Shodan API
+    api_key_env: "SHODAN_API_KEY"  # Name of environment variable for API key
+  virustotal:
+    enabled: true    # Whether to use VirusTotal API
+    api_key_env: "VIRUSTOTAL_API_KEY"  # Name of environment variable for API key
+  huggingface:
+    enabled: true    # Whether to use HuggingFace API
+    api_key_env: "HUGGINGFACE_API_KEY"  # Name of environment variable for API key
+
+# Red Agent Configuration
+red_agent:
+  scan_intensity: "normal"  # Options: light, normal, aggressive
+  exploit_timeout: 120      # Timeout for exploit attempts in seconds
+  max_exploit_attempts: 3   # Maximum number of exploit attempts per vulnerability
+  safe_mode: true           # If true, will not execute actual exploits
+
+# Blue Agent Configuration
+blue_agent:
+  monitor_interval: 60      # Interval for monitoring in seconds
+  auto_remediate: false     # If true, will automatically apply fixes
+  rule_generation: true     # If true, will generate IDS/IPS rules
+  backup_before_fix: true   # If true, will backup files before modifying
+
+# Logging Configuration
+logging:
+  level: "INFO"             # Options: DEBUG, INFO, WARNING, ERROR, CRITICAL
+  log_dir: "data/logs"
+  max_log_size: 10          # Maximum log size in MB
+  backup_count: 5           # Number of backup logs to keep
+
+# UI Configuration
+ui:
+  theme: "dark"             # Options: light, dark
+  update_interval: 5        # UI update interval in seconds
+  max_history_items: 100    # Maximum number of history items to display

@@ -1,0 +1,10 @@
+2025-05-22 10:59:31,635 - blue_agent - INFO - Blue Agent initialized
+2025-05-22 11:07:00,286 - blue_agent - INFO - Assessing vulnerabilities
+2025-05-22 11:07:00,290 - blue_agent - INFO - Generating mitigation strategies
+2025-05-22 11:08:38,867 - blue_agent - WARNING - Auto-remediation disabled. Skipping mitigation application.
+2025-05-22 11:09:42,544 - blue_agent - INFO - Generating defense rules
+2025-05-22 14:20:51,899 - blue_agent - INFO - Blue Agent initialized
+2025-05-22 14:23:14,060 - blue_agent - INFO - Blue Agent initialized
+2025-05-22 14:29:01,414 - blue_agent - INFO - Blue Agent initialized
+2025-05-22 14:59:44,932 - blue_agent - INFO - Blue Agent initialized
+2025-05-22 15:05:50,901 - blue_agent - INFO - Blue Agent initialized

@@ -1,0 +1,16 @@
+# Core dependencies
+numpy>=1.20.0
+scikit-learn>=1.0.0
+scipy>=1.7.0
+
+# Binary analysis
+capstone>=4.0.2
+pyelftools>=0.27
+pefile>=2021.5.24
+yara-python>=4.1.0
+
+# Optional dependencies (uncomment as needed)
+# angr>=9.0.0  # For symbolic execution
+# r2pipe>=1.6.0  # For radare2 integration
+# frida>=15.0.0  # For dynamic instrumentation
+# gdb-python>=1.0.0  # For GDB integration

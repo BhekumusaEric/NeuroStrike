@@ -1,0 +1,109 @@
+{
+    "training": {
+        "phases": ["basic", "intermediate", "advanced", "expert"],
+        "scenarios_per_phase": 5,
+        "max_iterations_per_scenario": 10,
+        "learning_rate": 0.1,
+        "feedback_threshold": 0.7
+    },
+    "agents": {
+        "binary_analyzer": {
+            "model": "gpt-3.5-turbo",
+            "temperature": 0.2,
+            "max_tokens": 1000
+        },
+        "memory_analyzer": {
+            "model": "gpt-3.5-turbo",
+            "temperature": 0.3,
+            "max_tokens": 1000
+        },
+        "function_matcher": {
+            "model": "gpt-3.5-turbo",
+            "temperature": 0.1,
+            "max_tokens": 1000
+        },
+        "exploit_pathfinder": {
+            "model": "gpt-4",
+            "temperature": 0.7,
+            "max_tokens": 2000
+        },
+        "workflow_automation": {
+            "model": "gpt-3.5-turbo",
+            "temperature": 0.4,
+            "max_tokens": 1500
+        },
+        "coordinator": {
+            "model": "gpt-4",
+            "temperature": 0.5,
+            "max_tokens": 2000
+        }
+    },
+    "evaluator": {
+        "model": "gpt-4",
+        "temperature": 0.2,
+        "max_tokens": 2000
+    },
+    "communication": {
+        "channels": ["binary_analysis", "vulnerability_detection", "exploit_generation", "workflow_automation"],
+        "message_history_limit": 50
+    },
+    "scenarios": {
+        "basic": [
+            {"type": "binary_analysis", "difficulty": 1, "target": "samples/basic_buffer_overflow.bin"},
+            {"type": "memory_analysis", "difficulty": 1, "target": "samples/basic_memory_dump.bin"},
+            {"type": "function_matching", "difficulty": 1, "target": "samples/basic_stripped_binary.bin"},
+            {"type": "vulnerability_detection", "difficulty": 1, "target": "samples/basic_vulnerable_app.bin"},
+            {"type": "workflow_automation", "difficulty": 1, "target": "samples/basic_malware.bin"}
+        ],
+        "intermediate": [
+            {"type": "binary_analysis", "difficulty": 2, "target": "samples/intermediate_obfuscated.bin"},
+            {"type": "memory_analysis", "difficulty": 2, "target": "samples/intermediate_memory_dump.bin"},
+            {"type": "function_matching", "difficulty": 2, "target": "samples/intermediate_stripped_binary.bin"},
+            {"type": "vulnerability_detection", "difficulty": 2, "target": "samples/intermediate_vulnerable_app.bin"},
+            {"type": "workflow_automation", "difficulty": 2, "target": "samples/intermediate_malware.bin"}
+        ],
+        "advanced": [
+            {"type": "binary_analysis", "difficulty": 3, "target": "samples/advanced_obfuscated.bin"},
+            {"type": "memory_analysis", "difficulty": 3, "target": "samples/advanced_memory_dump.bin"},
+            {"type": "function_matching", "difficulty": 3, "target": "samples/advanced_stripped_binary.bin"},
+            {"type": "vulnerability_detection", "difficulty": 3, "target": "samples/advanced_vulnerable_app.bin"},
+            {"type": "workflow_automation", "difficulty": 3, "target": "samples/advanced_malware.bin"}
+        ],
+        "expert": [
+            {"type": "binary_analysis", "difficulty": 4, "target": "samples/expert_obfuscated.bin"},
+            {"type": "memory_analysis", "difficulty": 4, "target": "samples/expert_memory_dump.bin"},
+            {"type": "function_matching", "difficulty": 4, "target": "samples/expert_stripped_binary.bin"},
+            {"type": "vulnerability_detection", "difficulty": 4, "target": "samples/expert_vulnerable_app.bin"},
+            {"type": "workflow_automation", "difficulty": 4, "target": "samples/expert_malware.bin"}
+        ]
+    },
+    "knowledge_transfer": {
+        "methods": ["direct_transfer", "distillation", "reinforcement"],
+        "transfer_threshold": 0.8,
+        "distillation_temperature": 0.5
+    },
+    "model_improvement": {
+        "fine_tuning": {
+            "enabled": true,
+            "learning_rate": 0.0001,
+            "epochs": 3,
+            "batch_size": 4
+        },
+        "pruning": {
+            "enabled": false,
+            "target_sparsity": 0.3,
+            "pruning_schedule": "polynomial"
+        },
+        "quantization": {
+            "enabled": false,
+            "precision": "int8"
+        }
+    },
+    "output": {
+        "save_models": true,
+        "save_metrics": true,
+        "save_scenarios": true,
+        "save_feedback": true,
+        "output_dir": "training_output"
+    }
+}
