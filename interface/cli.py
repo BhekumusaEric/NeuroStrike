@@ -1,6 +1,6 @@
 """
-Command Line Interface Module
-Provides a CLI for interacting with NeuroStrike
+Enhanced Command Line Interface Module
+Provides a comprehensive CLI for interacting with NeuroStrike
 """
 
 import os
@@ -8,13 +8,20 @@ import sys
 import cmd
 import json
 import time
+import shlex
+import subprocess
+import threading
 from typing import Dict, List, Any, Optional
+from datetime import datetime
+import ipaddress
+import re
 
 from utils.logger import get_logger
 
-class CLI(cmd.Cmd):
+class EnhancedCLI(cmd.Cmd):
     """
-    Command Line Interface for NeuroStrike
+    Enhanced Command Line Interface for NeuroStrike
+    Provides comprehensive cybersecurity operations with improved UX
     """
 
     intro = """
@@ -25,27 +32,31 @@ class CLI(cmd.Cmd):
     ██║ ╚████║███████╗╚██████╔╝██║  ██║╚██████╔╝███████║   ██║   ██║  ██║██║██║  ██╗███████╗
     ╚═╝  ╚═══╝╚══════╝ ╚═════╝ ╚═╝  ╚═╝ ╚═════╝ ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝╚═╝  ╚═╝╚══════╝
 
-    AI Red vs Blue Cyber War Game
-    Type 'help' or '?' to list commands.
+    🔴 Enhanced AI Red vs Blue Cyber War Game 🔵
+
+    Welcome to NeuroStrike Enhanced CLI!
+
+    🚀 Quick Start:
+    • Type 'status' to see current system state
+    • Type 'workflow' to see suggested command sequences
+    • Type 'help' or '?' to list all commands
+    • Type 'tutorial' for an interactive tutorial
+
+    💡 Pro Tips:
+    • Use 'set target <ip>' to set a default target
+    • Use 'history' to see command history
+    • Use 'save session' to save your current session
     """
-    prompt = "NeuroStrike> "
 
     def __init__(self, red_agent=None, blue_agent=None, config=None):
-        """
-        Initialize the CLI
-
-        Args:
-            red_agent: Red Agent instance
-            blue_agent: Blue Agent instance
-            config: Configuration dictionary
-        """
+        """Initialize the Enhanced CLI"""
         super().__init__()
-        self.logger = get_logger("cli")
+        self.logger = get_logger("enhanced_cli")
         self.red_agent = red_agent
         self.blue_agent = blue_agent
         self.config = config or {}
 
-        # State tracking
+        # Enhanced state tracking
         self.current_target = None
         self.scan_results = None
         self.vulnerabilities = None
@@ -53,11 +64,132 @@ class CLI(cmd.Cmd):
         self.exploitation_results = []
         self.mitigation_plans = []
         self.applied_mitigations = []
+        self.command_history = []
+        self.session_start_time = datetime.now()
+        self.auto_save = True
 
-        self.logger.info("CLI initialized")
+        # Color codes for better UX
+        self.colors = {
+            'red': '\033[91m',
+            'green': '\033[92m',
+            'yellow': '\033[93m',
+            'blue': '\033[94m',
+            'purple': '\033[95m',
+            'cyan': '\033[96m',
+            'white': '\033[97m',
+            'bold': '\033[1m',
+            'end': '\033[0m'
+        }
+
+        # Update prompt with colors and status
+        self._update_prompt()
+
+        self.logger.info("Enhanced CLI initialized")
+
+    def _update_prompt(self):
+        """Update the prompt with current status"""
+        status_color = self.colors['green'] if self.current_target else self.colors['yellow']
+        target_info = f"[{self.current_target}]" if self.current_target else "[no target]"
+
+        agent_status = ""
+        if self.red_agent and self.blue_agent:
+            agent_status = f"{self.colors['red']}R{self.colors['end']}/{self.colors['blue']}B{self.colors['end']}"
+        elif self.red_agent:
+            agent_status = f"{self.colors['red']}R{self.colors['end']}"
+        elif self.blue_agent:
+            agent_status = f"{self.colors['blue']}B{self.colors['end']}"
+
+        self.prompt = f"{self.colors['bold']}NeuroStrike{self.colors['end']} {agent_status} {status_color}{target_info}{self.colors['end']}> "
+
+    def _print_colored(self, text, color='white', bold=False):
+        """Print colored text"""
+        color_code = self.colors.get(color, self.colors['white'])
+        bold_code = self.colors['bold'] if bold else ''
+        print(f"{bold_code}{color_code}{text}{self.colors['end']}")
+
+    def _print_success(self, text):
+        """Print success message"""
+        self._print_colored(f"✅ {text}", 'green', bold=True)
+
+    def _print_error(self, text):
+        """Print error message"""
+        self._print_colored(f"❌ {text}", 'red', bold=True)
+
+    def _print_warning(self, text):
+        """Print warning message"""
+        self._print_colored(f"⚠️  {text}", 'yellow', bold=True)
+
+    def _print_info(self, text):
+        """Print info message"""
+        self._print_colored(f"ℹ️  {text}", 'cyan')
+
+    def _print_header(self, text):
+        """Print section header"""
+        self._print_colored(f"\n{'='*60}", 'blue')
+        self._print_colored(f"{text.center(60)}", 'blue', bold=True)
+        self._print_colored(f"{'='*60}", 'blue')
+
+    def _validate_ip(self, ip_str):
+        """Validate IP address or CIDR notation"""
+        try:
+            ipaddress.ip_network(ip_str, strict=False)
+            return True
+        except ValueError:
+            try:
+                ipaddress.ip_address(ip_str)
+                return True
+            except ValueError:
+                return False
+
+    def _save_command_history(self, command):
+        """Save command to history"""
+        timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        self.command_history.append({
+            'timestamp': timestamp,
+            'command': command,
+            'target': self.current_target
+        })
+
+        if self.auto_save and len(self.command_history) % 10 == 0:
+            self._auto_save_session()
+
+    def _auto_save_session(self):
+        """Auto-save session data"""
+        try:
+            os.makedirs("data/sessions", exist_ok=True)
+            session_file = f"data/sessions/session_{int(time.time())}.json"
+
+            session_data = {
+                'start_time': self.session_start_time.isoformat(),
+                'current_time': datetime.now().isoformat(),
+                'target': self.current_target,
+                'command_history': self.command_history[-50:],  # Last 50 commands
+                'vulnerabilities_count': len(self.vulnerabilities) if self.vulnerabilities else 0,
+                'exploit_plans_count': len(self.exploit_plans),
+                'mitigation_plans_count': len(self.mitigation_plans)
+            }
+
+            with open(session_file, 'w') as f:
+                json.dump(session_data, f, indent=2)
+
+        except Exception as e:
+            self.logger.error(f"Failed to auto-save session: {e}")
+
+    def precmd(self, line):
+        """Pre-process commands"""
+        if line.strip():
+            self._save_command_history(line.strip())
+        return line
+
+    def postcmd(self, stop, line):
+        """Post-process commands"""
+        self._update_prompt()
+        return stop
 
     def start(self):
-        """Start the CLI"""
+        """Start the Enhanced CLI"""
+        self._print_info("Starting NeuroStrike Enhanced CLI...")
+        self._print_info(f"Session started at: {self.session_start_time.strftime('%Y-%m-%d %H:%M:%S')}")
         self.cmdloop()
 
     def emptyline(self):
@@ -66,65 +198,425 @@ class CLI(cmd.Cmd):
 
     def do_exit(self, arg):
         """Exit the program"""
-        print("Exiting NeuroStrike...")
+        self._print_info("Saving session data...")
+        self._auto_save_session()
+        self._print_success("Session saved successfully!")
+        self._print_info("Exiting NeuroStrike...")
         return True
 
     def do_quit(self, arg):
-        """Exit the program"""
+        """Exit the program (alias for exit)"""
         return self.do_exit(arg)
 
-    def do_scan(self, arg):
-        """
-        Scan a target network or host
-        Usage: scan <target>
-        Example: scan 192.168.1.0/24
+    def do_clear(self, arg):
+        """Clear the screen"""
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print(self.intro)
+
+    def do_status(self, arg):
+        """Show current system status and configuration"""
+        self._print_header("SYSTEM STATUS")
+
+        # Agent status
+        self._print_colored("\n🤖 Agent Status:", 'blue', bold=True)
+        if self.red_agent:
+            self._print_colored("  🔴 Red Agent: ACTIVE", 'green')
+            safe_mode = getattr(self.red_agent, 'safe_mode', True)
+            self._print_colored(f"     Safe Mode: {'ON' if safe_mode else 'OFF'}", 'yellow' if safe_mode else 'red')
+        else:
+            self._print_colored("  🔴 Red Agent: INACTIVE", 'red')
+
+        if self.blue_agent:
+            self._print_colored("  🔵 Blue Agent: ACTIVE", 'green')
+            auto_remediate = getattr(self.blue_agent, 'auto_remediate', False)
+            self._print_colored(f"     Auto-Remediate: {'ON' if auto_remediate else 'OFF'}", 'red' if auto_remediate else 'yellow')
+        else:
+            self._print_colored("  🔵 Blue Agent: INACTIVE", 'red')
+
+        # Target status
+        self._print_colored("\n🎯 Target Information:", 'blue', bold=True)
+        if self.current_target:
+            self._print_colored(f"  Current Target: {self.current_target}", 'green')
+            if self.scan_results:
+                hosts_up = len(self.scan_results.get("network_info", {}).get("hosts_up", []))
+                open_ports = len(self.scan_results.get("ports_and_services", {}).get("open_ports", []))
+                self._print_colored(f"  Hosts Discovered: {hosts_up}", 'cyan')
+                self._print_colored(f"  Open Ports: {open_ports}", 'cyan')
+        else:
+            self._print_colored("  No target set", 'yellow')
+
+        # Vulnerability status
+        self._print_colored("\n🔍 Vulnerability Status:", 'blue', bold=True)
+        vuln_count = len(self.vulnerabilities) if self.vulnerabilities else 0
+        exploit_count = len(self.exploit_plans)
+        mitigation_count = len(self.mitigation_plans)
+
+        self._print_colored(f"  Vulnerabilities Found: {vuln_count}", 'red' if vuln_count > 0 else 'green')
+        self._print_colored(f"  Exploit Plans: {exploit_count}", 'yellow' if exploit_count > 0 else 'green')
+        self._print_colored(f"  Mitigation Plans: {mitigation_count}", 'green' if mitigation_count > 0 else 'yellow')
+
+        # Session info
+        self._print_colored("\n📊 Session Information:", 'blue', bold=True)
+        session_duration = datetime.now() - self.session_start_time
+        self._print_colored(f"  Session Duration: {str(session_duration).split('.')[0]}", 'cyan')
+        self._print_colored(f"  Commands Executed: {len(self.command_history)}", 'cyan')
+        self._print_colored(f"  Auto-Save: {'ON' if self.auto_save else 'OFF'}", 'green' if self.auto_save else 'yellow')
+
+    def do_set(self, arg):
+        """Set configuration options
+        Usage:
+          set target <ip_address>     - Set default target
+          set autosave <on|off>       - Enable/disable auto-save
         """
         if not arg:
-            print("Error: Target required")
-            print("Usage: scan <target>")
+            self._print_error("Missing arguments. Use 'help set' for usage.")
             return
 
-        if not self.red_agent:
-            print("Error: Red Agent not initialized")
+        args = shlex.split(arg)
+        if len(args) < 2:
+            self._print_error("Invalid arguments. Use 'help set' for usage.")
             return
 
-        print(f"Scanning target: {arg}")
-        self.current_target = arg
+        option = args[0].lower()
+        value = args[1]
+
+        if option == 'target':
+            if self._validate_ip(value):
+                self.current_target = value
+                self._print_success(f"Target set to: {value}")
+                self._update_prompt()
+            else:
+                self._print_error(f"Invalid IP address or CIDR notation: {value}")
+        elif option == 'autosave':
+            if value.lower() in ['on', 'true', '1']:
+                self.auto_save = True
+                self._print_success("Auto-save enabled")
+            elif value.lower() in ['off', 'false', '0']:
+                self.auto_save = False
+                self._print_success("Auto-save disabled")
+            else:
+                self._print_error("Invalid value. Use 'on' or 'off'")
+        else:
+            self._print_error(f"Unknown option: {option}")
+
+    def do_workflow(self, arg):
+        """Show suggested command workflows for different scenarios"""
+        self._print_header("SUGGESTED WORKFLOWS")
+
+        self._print_colored("\n🔴 Red Team (Offensive) Workflow:", 'red', bold=True)
+        self._print_colored("  1. set target <ip_address>", 'white')
+        self._print_colored("  2. scan <target>", 'white')
+        self._print_colored("  3. analyze", 'white')
+        self._print_colored("  4. exploit <vuln_id>", 'white')
+        self._print_colored("  5. execute <plan_id>", 'white')
+        self._print_colored("  6. report red", 'white')
+
+        self._print_colored("\n🔵 Blue Team (Defensive) Workflow:", 'blue', bold=True)
+        self._print_colored("  1. monitor", 'white')
+        self._print_colored("  2. defend (after vulnerabilities found)", 'white')
+        self._print_colored("  3. mitigate <plan_id>", 'white')
+        self._print_colored("  4. rules <exploit_id>", 'white')
+        self._print_colored("  5. report blue", 'white')
+
+        self._print_colored("\n🔬 Binary Analysis Workflow:", 'purple', bold=True)
+        self._print_colored("  1. analyze_binary <binary_path>", 'white')
+        self._print_colored("  2. find_binary_vulns", 'white')
+        self._print_colored("  3. binary_exploit <vuln_type> <vuln_index>", 'white')
+        self._print_colored("  4. generate_yara <description>", 'white')
+
+        self._print_colored("\n💾 Memory Analysis Workflow:", 'cyan', bold=True)
+        self._print_colored("  1. analyze_memory <dump_path>", 'white')
+        self._print_colored("  2. extract_artifacts", 'white')
+        self._print_colored("  3. generate_iocs", 'white')
+
+    def do_history(self, arg):
+        """Show command history
+        Usage:
+          history           - Show last 20 commands
+          history <n>       - Show last n commands
+          history clear     - Clear command history
+        """
+        if arg == 'clear':
+            self.command_history.clear()
+            self._print_success("Command history cleared")
+            return
 
         try:
-            self.scan_results = self.red_agent.scan_target(arg)
+            limit = int(arg) if arg else 20
+        except ValueError:
+            self._print_error("Invalid number. Use 'history <number>' or 'history clear'")
+            return
 
-            # Display summary
-            hosts_up = self.scan_results.get("network_info", {}).get("hosts_up", [])
-            open_ports = self.scan_results.get("ports_and_services", {}).get("open_ports", [])
+        if not self.command_history:
+            self._print_info("No command history available")
+            return
 
-            print("\nScan Results Summary:")
-            print(f"Target: {arg}")
-            print(f"Hosts up: {len(hosts_up)}")
-            print(f"Open ports: {len(open_ports)}")
+        self._print_header("COMMAND HISTORY")
 
-            # Display hosts
-            if hosts_up:
-                print("\nHosts:")
-                for host in hosts_up[:10]:  # Limit to 10 hosts
-                    print(f"  {host}")
-                if len(hosts_up) > 10:
-                    print(f"  ... and {len(hosts_up) - 10} more")
+        recent_commands = self.command_history[-limit:]
+        for i, cmd_info in enumerate(recent_commands, 1):
+            timestamp = cmd_info['timestamp']
+            command = cmd_info['command']
+            target = cmd_info.get('target', 'N/A')
 
-            # Display ports and services
-            if open_ports:
-                print("\nOpen Ports and Services:")
-                services = self.scan_results.get("ports_and_services", {}).get("services", {})
-                for port in sorted(open_ports)[:10]:  # Limit to 10 ports
-                    service = services.get(port, {}).get("name", "unknown")
-                    print(f"  {port}/tcp: {service}")
-                if len(open_ports) > 10:
-                    print(f"  ... and {len(open_ports) - 10} more")
+            self._print_colored(f"{i:2d}. [{timestamp}] {command}", 'cyan')
+            if target != 'N/A':
+                self._print_colored(f"     Target: {target}", 'yellow')
 
-            print("\nScan completed successfully")
+    def do_tutorial(self, arg):
+        """Interactive tutorial for NeuroStrike"""
+        self._print_header("NEUROSTRIKE TUTORIAL")
+
+        self._print_colored("\n🎓 Welcome to the NeuroStrike Tutorial!", 'green', bold=True)
+        self._print_info("This tutorial will guide you through basic operations.")
+
+        if not input("\nWould you like to continue? (y/n): ").lower().startswith('y'):
+            return
+
+        # Tutorial steps
+        steps = [
+            {
+                'title': 'Step 1: Check System Status',
+                'command': 'status',
+                'description': 'First, let\'s check the current system status'
+            },
+            {
+                'title': 'Step 2: Set a Target',
+                'command': 'set target 127.0.0.1',
+                'description': 'Set a target IP address (using localhost for safety)'
+            },
+            {
+                'title': 'Step 3: View Workflows',
+                'command': 'workflow',
+                'description': 'See suggested command workflows'
+            }
+        ]
+
+        for step in steps:
+            self._print_colored(f"\n{step['title']}", 'blue', bold=True)
+            self._print_info(step['description'])
+
+            if input(f"Execute '{step['command']}'? (y/n): ").lower().startswith('y'):
+                self.onecmd(step['command'])
+
+            input("\nPress Enter to continue...")
+
+        self._print_success("Tutorial completed! Type 'help' to see all available commands.")
+
+    def do_save(self, arg):
+        """Save session data
+        Usage:
+          save session      - Save current session
+          save config       - Save current configuration
+        """
+        if not arg:
+            arg = 'session'
+
+        if arg == 'session':
+            try:
+                os.makedirs("data/sessions", exist_ok=True)
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                session_file = f"data/sessions/manual_session_{timestamp}.json"
+
+                session_data = {
+                    'start_time': self.session_start_time.isoformat(),
+                    'save_time': datetime.now().isoformat(),
+                    'target': self.current_target,
+                    'command_history': self.command_history,
+                    'vulnerabilities_count': len(self.vulnerabilities) if self.vulnerabilities else 0,
+                    'exploit_plans_count': len(self.exploit_plans),
+                    'mitigation_plans_count': len(self.mitigation_plans),
+                    'scan_results_available': self.scan_results is not None
+                }
+
+                with open(session_file, 'w') as f:
+                    json.dump(session_data, f, indent=2)
+
+                self._print_success(f"Session saved to: {session_file}")
+
+            except Exception as e:
+                self._print_error(f"Failed to save session: {e}")
+
+        elif arg == 'config':
+            try:
+                os.makedirs("data/configs", exist_ok=True)
+                timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+                config_file = f"data/configs/config_{timestamp}.json"
+
+                config_data = {
+                    'target': self.current_target,
+                    'auto_save': self.auto_save,
+                    'red_agent_active': self.red_agent is not None,
+                    'blue_agent_active': self.blue_agent is not None,
+                    'safe_mode': getattr(self.red_agent, 'safe_mode', True) if self.red_agent else True,
+                    'auto_remediate': getattr(self.blue_agent, 'auto_remediate', False) if self.blue_agent else False
+                }
+
+                with open(config_file, 'w') as f:
+                    json.dump(config_data, f, indent=2)
+
+                self._print_success(f"Configuration saved to: {config_file}")
+
+            except Exception as e:
+                self._print_error(f"Failed to save configuration: {e}")
+        else:
+            self._print_error("Invalid save option. Use 'session' or 'config'")
+
+    def do_load(self, arg):
+        """Load session data
+        Usage: load <session_file>
+        """
+        if not arg:
+            self._print_error("Session file path required")
+            return
+
+        try:
+            with open(arg, 'r') as f:
+                session_data = json.load(f)
+
+            # Restore session data
+            self.current_target = session_data.get('target')
+            self.command_history = session_data.get('command_history', [])
+
+            self._update_prompt()
+            self._print_success(f"Session loaded from: {arg}")
+            self._print_info(f"Target: {self.current_target}")
+            self._print_info(f"Commands in history: {len(self.command_history)}")
+
+        except FileNotFoundError:
+            self._print_error(f"Session file not found: {arg}")
+        except json.JSONDecodeError:
+            self._print_error(f"Invalid session file format: {arg}")
         except Exception as e:
-            self.logger.error(f"Error during scan: {e}")
-            print(f"Error during scan: {e}")
+            self._print_error(f"Failed to load session: {e}")
+
+    def do_scan(self, arg):
+        """Enhanced network scanning with detailed output
+        Usage:
+          scan <target>           - Scan specified target
+          scan                    - Scan current target
+          scan -p <ports> <target> - Scan specific ports
+          scan -A <target>        - Aggressive scan (OS detection, version detection, script scanning)
+        """
+        # Parse arguments
+        args = shlex.split(arg) if arg else []
+
+        target = None
+        port_range = None
+        aggressive = False
+
+        i = 0
+        while i < len(args):
+            if args[i] == '-p' and i + 1 < len(args):
+                port_range = args[i + 1]
+                i += 2
+            elif args[i] == '-A':
+                aggressive = True
+                i += 1
+            else:
+                target = args[i]
+                i += 1
+
+        # Use current target if none specified
+        if not target:
+            if self.current_target:
+                target = self.current_target
+            else:
+                self._print_error("No target specified and no current target set")
+                self._print_info("Use 'set target <ip>' or 'scan <target>'")
+                return
+
+        if not self.red_agent:
+            self._print_error("Red Agent not available")
+            return
+
+        try:
+            self._print_header(f"SCANNING TARGET: {target}")
+
+            # Show scan parameters
+            self._print_colored("\n📋 Scan Parameters:", 'blue', bold=True)
+            self._print_colored(f"  Target: {target}", 'cyan')
+            if port_range:
+                self._print_colored(f"  Ports: {port_range}", 'cyan')
+            if aggressive:
+                self._print_colored("  Mode: Aggressive (OS detection, version detection, scripts)", 'yellow')
+            else:
+                self._print_colored("  Mode: Standard", 'cyan')
+
+            self._print_info("Starting scan... This may take a while.")
+
+            # Perform the scan
+            scan_options = {
+                'port_range': port_range,
+                'aggressive': aggressive
+            }
+
+            self.scan_results = self.red_agent.scan_target(target, **scan_options)
+            self.current_target = target
+            self._update_prompt()
+
+            if self.scan_results:
+                self._print_success("Scan completed successfully!")
+
+                # Display detailed results
+                self._print_colored("\n📊 Scan Results:", 'green', bold=True)
+
+                network_info = self.scan_results.get('network_info', {})
+                hosts_up = network_info.get('hosts_up', [])
+
+                if hosts_up:
+                    self._print_colored(f"  🖥️  Hosts Discovered: {len(hosts_up)}", 'green')
+                    for host in hosts_up[:5]:  # Show first 5 hosts
+                        self._print_colored(f"     • {host}", 'white')
+                    if len(hosts_up) > 5:
+                        self._print_colored(f"     ... and {len(hosts_up) - 5} more", 'yellow')
+
+                ports_services = self.scan_results.get('ports_and_services', {})
+                open_ports = ports_services.get('open_ports', [])
+
+                if open_ports:
+                    self._print_colored(f"  🔌 Open Ports: {len(open_ports)}", 'green')
+                    for port in open_ports[:10]:  # Show first 10 ports
+                        port_num = port.get('port', 'Unknown')
+                        service = port.get('service', 'Unknown')
+                        version = port.get('version', '')
+
+                        port_info = f"     • {port_num}/{port.get('protocol', 'tcp')} - {service}"
+                        if version:
+                            port_info += f" ({version})"
+                        self._print_colored(port_info, 'white')
+
+                    if len(open_ports) > 10:
+                        self._print_colored(f"     ... and {len(open_ports) - 10} more", 'yellow')
+
+                # OS Detection results
+                os_info = self.scan_results.get('os_detection', {})
+                if os_info:
+                    self._print_colored(f"  💻 OS Detection:", 'green')
+                    for os_match in os_info.get('matches', [])[:3]:
+                        accuracy = os_match.get('accuracy', 0)
+                        name = os_match.get('name', 'Unknown')
+                        self._print_colored(f"     • {name} ({accuracy}% accuracy)", 'white')
+
+                self._print_info("\nUse 'analyze' to find vulnerabilities in the scan results")
+
+            else:
+                self._print_warning("Scan completed but no results returned")
+                self._print_info("This might indicate:")
+                self._print_info("  • Target is down or unreachable")
+                self._print_info("  • Firewall is blocking the scan")
+                self._print_info("  • Invalid target specification")
+
+        except Exception as e:
+            self._print_error(f"Scan failed: {e}")
+            self.logger.error(f"Scan failed: {e}")
+
+            # Provide helpful suggestions
+            self._print_info("\n💡 Troubleshooting suggestions:")
+            self._print_info("  • Check if target is reachable (ping)")
+            self._print_info("  • Verify target IP address format")
+            self._print_info("  • Check network connectivity")
+            self._print_info("  • Try scanning a smaller port range")
 
     def do_analyze(self, arg):
         """
@@ -896,3 +1388,19 @@ class CLI(cmd.Cmd):
             print("  help                    - Show this help message")
             print("  exit                    - Exit the program")
             print("\nType 'help <command>' for more information about a command.")
+
+
+def start_cli(red_agent=None, blue_agent=None, config=None):
+    """
+    Start the Enhanced CLI interface
+
+    Args:
+        red_agent: Red Agent instance
+        blue_agent: Blue Agent instance
+        config: Configuration dictionary
+    """
+    cli = EnhancedCLI(red_agent, blue_agent, config)
+    cli.start()
+
+# Legacy support - keep the old CLI class name as an alias
+CLI = EnhancedCLI
